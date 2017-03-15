@@ -84,7 +84,7 @@ int main(int argc, char **argv) {
         size_t ret = the_trie.read(ifs);
         gettimeofday(&end, NULL);
         ifs.close();
-        std::cout << "INFO: Read DB from '" << dbname << "' in "
+        std::cerr << "INFO: Read DB from '" << dbname << "' in "
             << (long)(end.tv_sec - begin.tv_sec) * 1000000 + end.tv_usec - begin.tv_usec
             << "us." << std::endl;
         if (ret == 0) {
@@ -99,7 +99,6 @@ int main(int argc, char **argv) {
 
     // read test keys
     while(true) {
-        std::cout << "Start find by INPUT {key}: ";
         std::cin >> key;
         if (std::cin.eof()) {
             break;
@@ -110,7 +109,7 @@ int main(int argc, char **argv) {
     for (int i=0; i<test_round; i++) {
         for (int j = 0; j < test_keys.size(); j++) {
             value = the_trie.get(test_keys[j].c_str(), 0);
-            std::cout << test_keys[j] << "\t" << value << std::endl;
+//            std::cout << test_keys[j] << "\t" << value << std::endl;
         }
     }
     gettimeofday(&end, NULL);
