@@ -94,19 +94,30 @@ int main(int argc, char **argv) {
     }
     std::string key;
     uint32_t value = 0;
+    std::vector<std::string> test_keys;
+    uint32_t test_round = 1;
 
+    // read test keys
     while(true) {
         std::cout << "Start find by INPUT {key}: ";
         std::cin >> key;
         if (std::cin.eof()) {
             break;
         }
-        gettimeofday(&begin, NULL);
-        value = the_trie.get(key.c_str(), 0);
-        gettimeofday(&end, NULL);
-        std::cout << "# find '" << key << "=" << value << "' completed in "
-            << (long)(end.tv_sec - begin.tv_sec) * 1000000 + end.tv_usec - begin.tv_usec
-            << "us." << std::endl;
+        test_keys.push_back(key);
     }
+    gettimeofday(&begin, NULL);
+    for (int i=0; i<test_round; i++) {
+        for (int j = 0; j < test_keys.size(); j++) {
+            value = the_trie.get(test_keys[j].c_str(), 0);
+            std::cout << test_keys[j] << "\t" << value << std::endl;
+        }
+    }
+    gettimeofday(&end, NULL);
+    std::cerr <<  test_round << "*" << test_keys.size() << " get completed in "
+        << (long)(end.tv_sec - begin.tv_sec) * 1000000 + end.tv_usec - begin.tv_usec
+        << "us, speed: "
+        <<  ((test_round*test_keys.size())*1000000.0)/((end.tv_sec - begin.tv_sec) * 1000000 + end.tv_usec - begin.tv_usec)
+        << " gets/second." << std::endl;
     return 0;
 }
